@@ -82,7 +82,7 @@ public class TFSRepositoryProvider extends RepositoryProvider {
 
     @Override
     public void setProject(final IProject project) {
-        log.debug(MessageFormat.format("Opening repository for project {0}", project.getName())); //$NON-NLS-1$
+        log.debug(MessageFormat.format("PLUGN Opening repositoryd for project {0}", project.getName())); //$NON-NLS-1$
 
         /**
          * The runtime and UI may not be fully formed here. We need to connect
@@ -95,16 +95,28 @@ public class TFSRepositoryProvider extends RepositoryProvider {
                 project.getName())) {
                 @Override
                 protected IStatus run(final IProgressMonitor monitor) {
+					log.debug(MessageFormat.format("PLUGN  Before run for project {0}", project.getName()));
                     TFSEclipseClientPlugin.getDefault().getProjectManager().connectIfNecessary(project);
+					log.debug(MessageFormat.format("PLUGN  After run for project {0}", project.getName()));
 
                     return Status.OK_STATUS;
                 }
             };
 
-        connectJob.setSystem(true);
+		log.debug(MessageFormat.format("PLUGN Before system set for {0}!", project.getName())); //$NON-NLS-1$
+        
+		connectJob.setSystem(true);
+		
+		log.debug(MessageFormat.format("PLUGN After system set for {0}!", project.getName())); //$NON-NLS-1$
+		
         connectJob.schedule();
+		
+		log.debug(MessageFormat.format("PLUGN Job scheduled for {0}!", project.getName())); //$NON-NLS-1$
 
         super.setProject(project);
+		
+		log.debug(MessageFormat.format("PLUGN {0} is set!", project.getName())); //$NON-NLS-1$
+		
     }
 
     public TFSRepository getRepository() {

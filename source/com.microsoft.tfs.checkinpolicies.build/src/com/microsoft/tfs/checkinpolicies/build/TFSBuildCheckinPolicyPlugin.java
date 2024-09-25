@@ -6,6 +6,11 @@ package com.microsoft.tfs.checkinpolicies.build;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
+import java.rmi.activation.Activator;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -16,6 +21,8 @@ public class TFSBuildCheckinPolicyPlugin extends Plugin {
 
     // The shared instance
     private static TFSBuildCheckinPolicyPlugin plugin;
+
+    private static final Log log = LogFactory.getLog(TFSBuildCheckinPolicyPlugin.class);
 
     /**
      * The constructor
@@ -33,6 +40,8 @@ public class TFSBuildCheckinPolicyPlugin extends Plugin {
     public void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+
+        log.debug("PLUGN BuildCheckin started");
     }
 
     /*

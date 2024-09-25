@@ -193,6 +193,9 @@ public class VersionedVendorFilesystemPersistenceStore extends FilesystemPersist
          * This is overridden so the children are the same type as this class
          * (required by the PersistenceStore).
          */
-        return new VersionedVendorFilesystemPersistenceStore(new File(getStoreFile(), childName));
+        log.debug(MessageFormat.format("PLUGN ChildStore {0}", childName));
+        VersionedVendorFilesystemPersistenceStore v = new VersionedVendorFilesystemPersistenceStore(new File(getStoreFile(), childName));
+        log.debug(MessageFormat.format("PLUGN ChildStore2 {0}", childName));
+        return v;
     }
 }

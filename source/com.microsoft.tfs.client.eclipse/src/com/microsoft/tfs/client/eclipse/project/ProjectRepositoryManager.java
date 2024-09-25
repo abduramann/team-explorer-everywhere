@@ -220,20 +220,30 @@ public class ProjectRepositoryManager {
     }
 
     private void waitForManagerStartup() {
+        log.debug("PLUGN Before waitForManagerStart");
+
         while (true) {
             synchronized (projectDataLock) {
+                log.debug("PLUGN After waitForManagerStartSynchronize"); 
                 if (started == true) {
+                    log.debug("PLUGN After waitForManagerStart");
                     return;
                 }
             }
 
-            try {
+            log.debug("PLUGN After waitForManagerStartSynchronize2");                                
+
+             try {
                 Thread.sleep(50);
+                // The line below has been added otherwise the plugin would freeze Eclipse at launch
+                // since ProjectRepositoryManager never started.
+                throw new InterruptedException("PLUGN Interrupt");
             } catch (final InterruptedException e) {
+                log.debug("PLUGN AfterEx waitForManagerStart");
                 throw new RuntimeException(
                     Messages.getString("ProjectRepositoryManager.InterruptedWhileWaitingForProjectManagerStartup"), //$NON-NLS-1$
                     e);
-            }
+            } 
         }
     }
 
@@ -433,9 +443,11 @@ public class ProjectRepositoryManager {
      * @return The connected repository, or null if it could not be connected.
      */
     public TFSRepository connectIfNecessary(final IProject project) {
+		log.debug(MessageFormat.format("PLUGN Before wait for project {0}", project.getName()));
         Check.notNull(project, "project"); //$NON-NLS-1$
 
         waitForManagerStartup();
+		log.debug(MessageFormat.format("PLUGN After wait for project {0}", project.getName()));
 
         ProjectRepositoryData projectData;
 
@@ -489,6 +501,7 @@ public class ProjectRepositoryManager {
                         /* Sanity check. */
                         return null;
                     } else if (projectData.getStatus() != ProjectRepositoryStatus.CONNECTING) {
+						log.debug(MessageFormat.format("PLUGN Before getRepo for project {0}", project.getName()));
                         return projectData.getRepository();
                     }
 
@@ -500,6 +513,8 @@ public class ProjectRepositoryManager {
             }
         }
 
+		log.debug(MessageFormat.format("PLUGN Before internal connect for project {0}", project.getName()));
+		
         return connectInternal(project, true, projectData);
     }
 
@@ -799,6 +814,8 @@ public class ProjectRepositoryManager {
     }
 
     public boolean isConnecting() {
+        log.debug("PLUGN isConnecting");       
+
         waitForManagerStartup();
 
         synchronized (projectDataLock) {
@@ -826,6 +843,8 @@ public class ProjectRepositoryManager {
     }
 
     public IProject[] getProjects() {
+        log.debug("PLUGN getProjects");       
+
         waitForManagerStartup();
 
         synchronized (projectDataLock) {
@@ -849,6 +868,8 @@ public class ProjectRepositoryManager {
      */
     public IProject[] getProjectsOfStatus(final ProjectRepositoryStatus status) {
         Check.notNull(status, "status"); //$NON-NLS-1$
+
+        log.debug("PLUGN getProjectsOfStatus");        
 
         waitForManagerStartup();
 
@@ -881,6 +902,8 @@ public class ProjectRepositoryManager {
      *         <code>null</code>)
      */
     public IProject[] getClosedProjects() {
+        log.debug("PLUGN getClosedProjects");
+
         waitForManagerStartup();
 
         synchronized (projectDataLock) {
@@ -897,6 +920,8 @@ public class ProjectRepositoryManager {
     public IProject[] getProjectsForRepository(final TFSRepository repository) {
         Check.notNull(repository, "repository"); //$NON-NLS-1$
 
+        log.debug("PLUGN getProjectsForRepository");
+        
         waitForManagerStartup();
 
         synchronized (projectDataLock) {
@@ -961,6 +986,8 @@ public class ProjectRepositoryManager {
      */
     public void disconnect(final IProject[] projects, final boolean disconnectServer) {
         Check.notNull(projects, "projects"); //$NON-NLS-1$
+
+        log.debug("PLUGN disconnect");
 
         waitForManagerStartup();
 
@@ -1044,6 +1071,8 @@ public class ProjectRepositoryManager {
 
     void close(final IProject project) {
         Check.notNull(project, "project"); //$NON-NLS-1$
+
+        log.debug("PLUGN close");
 
         waitForManagerStartup();
 
@@ -1267,6 +1296,8 @@ public class ProjectRepositoryManager {
     public ProjectRepositoryStatus getProjectStatus(final IProject project) {
         Check.notNull(project, "project"); //$NON-NLS-1$
 
+        log.debug("PLUGN getProjectStatus");
+
         waitForManagerStartup();
 
         synchronized (projectDataLock) {
@@ -1286,6 +1317,8 @@ public class ProjectRepositoryManager {
     }
 
     public Map<TFSRepository, Set<IProject>> getRepositoryToProjectMap() {
+        log.debug("PLUGN getRepositoryToProjectMap");
+
         waitForManagerStartup();
 
         final Map<TFSRepository, Set<IProject>> cloneMap = new HashMap<TFSRepository, Set<IProject>>();
@@ -1300,6 +1333,8 @@ public class ProjectRepositoryManager {
     }
 
     public TFSRepository[] getRepositories() {
+        log.debug("PLUGN getRepositories");
+
         waitForManagerStartup();
 
         final List<TFSRepository> repositories = new ArrayList<TFSRepository>();
@@ -1328,6 +1363,15 @@ public class ProjectRepositoryManager {
 
     public TFSRepository getRepository(final IProject project) {
         Check.notNull(project, "project"); //$NON-NLS-1$
+
+        log.debug("PLUGN getRepository");
+
+        /* try {
+        throw new Exception("PLUGN StackTrace");
+        }
+        catch(Exception e){
+            log.error("some message", e);
+        } */
 
         waitForManagerStartup();
 

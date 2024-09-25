@@ -31,10 +31,16 @@ import com.microsoft.tfs.util.Check;
 import com.microsoft.tfs.util.Platform;
 import com.microsoft.tfs.util.listeners.SingleListenerFacade;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
 /**
  * The activator class controls the plug-in life cycle.
  */
 public class TFSCommonUIClientPlugin extends AbstractUIPlugin implements TFSConsoleProvider {
+    private static final Log log = LogFactory.getLog(TFSCommonUIClientPlugin.class);
+
     // The plug-in ID
     public static final String PLUGIN_ID = "com.microsoft.tfs.client.common.ui"; //$NON-NLS-1$
 
@@ -122,7 +128,11 @@ public class TFSCommonUIClientPlugin extends AbstractUIPlugin implements TFSCons
                     Display.getDefault().asyncExec(new Runnable() {
                         @Override
                         public void run() {
+                            log.debug("PLUGN Before Workbench678...");
+
                             createConsole();
+
+                            log.debug("PLUGN After Workbench678...");
                         }
                     });
                 }
@@ -140,6 +150,8 @@ public class TFSCommonUIClientPlugin extends AbstractUIPlugin implements TFSCons
                     Display.getDefault().asyncExec(new Runnable() {
                         @Override
                         public void run() {
+                            log.debug("PLUGN Before Workbench123...");
+
                             /*
                              * Messages received by the manager we construct
                              * will be routed to the Workstation for dispatch
@@ -154,6 +166,8 @@ public class TFSCommonUIClientPlugin extends AbstractUIPlugin implements TFSCons
                                 // TODO implement other mechanisms for other
                                 // platforms
                             }
+
+                            log.debug("PLUGN After Workbench123...");
                         }
                     });
                 }

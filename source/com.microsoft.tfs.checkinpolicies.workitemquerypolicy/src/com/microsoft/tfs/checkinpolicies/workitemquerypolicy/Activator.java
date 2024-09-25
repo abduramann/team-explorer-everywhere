@@ -6,6 +6,9 @@ package com.microsoft.tfs.checkinpolicies.workitemquerypolicy;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -16,6 +19,8 @@ public class Activator extends Plugin {
 
     // The shared instance
     private static Activator plugin;
+
+    private static final Log log = LogFactory.getLog(Activator.class);
 
     /**
      * The constructor
@@ -33,6 +38,7 @@ public class Activator extends Plugin {
     public void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+        log.debug("PLUGN Activator started");
     }
 
     /*

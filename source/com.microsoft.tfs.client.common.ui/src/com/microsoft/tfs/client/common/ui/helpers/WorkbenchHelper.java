@@ -46,6 +46,8 @@ public class WorkbenchHelper {
     public static void runOnWorkbenchStartup(String name, final Runnable runnable) {
         Check.notNull(runnable, "runnable"); //$NON-NLS-1$
 
+        log.debug("PLUGN Workbench job starts...");
+
         if (name == null) {
             name = Messages.getString("WorkbenchHelper.WorkbenchStartupJobName"); //$NON-NLS-1$
         }
@@ -69,6 +71,8 @@ public class WorkbenchHelper {
         @Override
         protected IStatus run(final IProgressMonitor monitor) {
             try {
+                log.debug("PLUGN Workbench starts...");
+
                 if (getWorkbench() == null) {
                     log.info(MessageFormat.format("Job '{0}' is waiting for workbench creation", getName())); //$NON-NLS-1$
 

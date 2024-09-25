@@ -213,6 +213,8 @@ public class SynchronizeSubscriber extends Subscriber {
     }
 
     private void blockForConnection() throws TeamException {
+        log.debug("PLUGN Before blockForConn");
+
         /* Block until there's a connection finished. This is sort of hacky. */
         final ProjectRepositoryManager projectManager = TFSEclipseClientPlugin.getDefault().getProjectManager();
 
@@ -224,6 +226,8 @@ public class SynchronizeSubscriber extends Subscriber {
                     Messages.getString("SynchronizeSubscriber.CouldNotWaitForConnectionDueToInterruption")); //$NON-NLS-1$
             }
         }
+
+        log.debug("PLUGN After blockForConn");
     }
 
     /**

@@ -79,13 +79,15 @@ public final class TFSEclipseClientPlugin extends Plugin {
      */
     @Override
     public void start(final BundleContext context) throws Exception {
+        LogFactory.getLog(getClass()).debug("PLUGN Plugin starts"); 
         super.start(context);
+        LogFactory.getLog(getClass()).debug("PLUGN Plugin started"); 
 
         plugin = this;
 
         ResourcesPlugin.getWorkspace().addResourceChangeListener(
             resourceChangedListener,
-            IResourceChangeEvent.POST_CHANGE);
+            IResourceChangeEvent.POST_CHANGE); 
 
         /*
          * Queue a job to notify the project repository manager to start. We
@@ -97,12 +99,19 @@ public final class TFSEclipseClientPlugin extends Plugin {
         {
             @Override
             protected IStatus run(final IProgressMonitor progressMonitor) {
+                LogFactory.getLog(getClass()).debug("PLUGN RepoMngr starts"); 
                 projectRepositoryManager.start();
+                LogFactory.getLog(getClass()).debug("PLUGN RepoMngr started"); 
                 return Status.OK_STATUS;
             }
         };
+
         projectStartupJob.setSystem(true);
-        projectStartupJob.schedule();
+        projectStartupJob.schedule(); 
+
+        //projectRepositoryManager.start();
+
+        LogFactory.getLog(getClass()).debug("PLUGN Plugin started2"); 
     }
 
     /*

@@ -219,6 +219,7 @@ public class TFSResourceChangeListener implements IResourceChangeListener {
      */
     @Override
     public void resourceChanged(final IResourceChangeEvent event) {
+        log.debug("PLUGN ResourceChanged1"); 
         final Thread t = Thread.currentThread();
         synchronized (ignoreThreads) {
             if (ignoreThreads.contains(t)) {
@@ -279,6 +280,8 @@ public class TFSResourceChangeListener implements IResourceChangeListener {
             reportConvertToEditStatus(status.getStatus(), status.getNonFatals());
         }
 
+        log.debug("PLUGN ResourceChanged2"); 
+
         /*
          * Pend adds for matching files. This class is really just about add
          * operations. Other classes handle rename/move, delete, etc. See this
@@ -296,6 +299,7 @@ public class TFSResourceChangeListener implements IResourceChangeListener {
             reportAdditionStatus(status.getStatus(), status.getNonFatals());
         }
 
+        log.debug("PLUGN ResourceChanged3"); 
         /*
          * Scan files that were edited in order to pend a scan for a local
          * workspace.
@@ -311,6 +315,8 @@ public class TFSResourceChangeListener implements IResourceChangeListener {
             reportScanStatus(status.getStatus(), status.getNonFatals());
         }
 
+
+        log.debug("PLUGN ResourceChanged4"); 
         /*
          * Queue background resource data updates for files that were modified
          * outside of our purview.
@@ -716,6 +722,7 @@ public class TFSResourceChangeListener implements IResourceChangeListener {
     }
 
     private TFSResourceChangeStatus scanItems(final TFSRepository repository, final Set<String> localPaths) {
+        log.debug("PLUGN scanItems1"); 
         Check.notNull(repository, "repository"); //$NON-NLS-1$
         Check.notNull(localPaths, "localPaths"); //$NON-NLS-1$
 
@@ -732,11 +739,14 @@ public class TFSResourceChangeListener implements IResourceChangeListener {
             new JobCommandExecutor(new JobOptions().setSystem(true)).execute(new ResourceChangingCommand(command));
         }
 
+        log.debug("PLUGN scanItems2"); 
         return new TFSResourceChangeStatus(Status.OK_STATUS);
     }
 
     private final TFSResourceChangeStatusReporter[] getStatusReporters() {
+        log.debug("PLUGN ChangeResourceReporter1"); 
         synchronized (statusReporterLock) {
+            
             /*
              * If we do not have any TFSResourceChangeStatusNotifiers, query
              * extension points. This allows UI-aware plugins to provide
@@ -771,7 +781,8 @@ public class TFSResourceChangeListener implements IResourceChangeListener {
 
                 statusReporters = reporterList.toArray(new TFSResourceChangeStatusReporter[reporterList.size()]);
             }
-
+            
+            log.debug("PLUGN ChangeResourceReporter2"); 
             return statusReporters;
         }
     }

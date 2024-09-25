@@ -6,6 +6,9 @@ package com.microsoft.tfs.checkinpolicies;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -15,6 +18,8 @@ public class TFSCheckinPoliciesPlugin extends Plugin {
 
     // The shared instance
     private static TFSCheckinPoliciesPlugin plugin;
+
+    private static final Log log = LogFactory.getLog(TFSCheckinPoliciesPlugin.class);
 
     /**
      * The constructor
@@ -29,6 +34,8 @@ public class TFSCheckinPoliciesPlugin extends Plugin {
     public void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+
+        log.debug("PLUGN Checkinpolicy started");
     }
 
     /**
